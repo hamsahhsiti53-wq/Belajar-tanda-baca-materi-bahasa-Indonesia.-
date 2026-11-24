@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Tanda Baca - Belajar Bahasa Indonesia Kelas 3-4 SD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Fredoka & Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library for rewards -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastelBlue: '#E0F7FA',
+                        pastelBlueDark: '#4DD0E1',
+                        pastelYellow: '#FFF9C4',
+                        pastelYellowDark: '#FBC02D',
+                        pastelGreen: '#E8F5E9',
+                        pastelGreenDark: '#81C784',
+                        pastelPink: '#FCE4EC',
+                        pastelPinkDark: '#F06292',
+                        pastelPurple: '#EDE7F6',
+                        pastelPurpleDark: '#BA68C8',
+                        pastelOrange: '#FFE0B2',
+                        pastelOrangeDark: '#FFB74D',
+                    },
+                    fontFamily: {
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        nunito: ['Nunito', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #F8F9FA;
+            background-image: radial-gradient(#E0F7FA 1.5px, transparent 1.5px), radial-gradient(#FCE4EC 1.5px, #F8F9FA 1.5px);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Fredoka', cursive;
+        }
+
+        /* Perspective for 3D Flip Card */
+        .perspective {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F1F1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #81C784;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4CAF50;
+        }
+
+        /* Printable Area Custom Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-poster, #printable-poster *, #printable-lkpd, #printable-lkpd * {
+                visibility: visible;
+            }
+            #printable-poster, #printable-lkpd {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* Bouncing Animation */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .animate-float-delayed {
+            animation: float 4s ease-in-out 2s infinite;
+        }
+
+        /* Speech Bubble Tail */
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 30px;
+            border-width: 15px 15px 0;
+            border-style: solid;
+            border-color: #ffffff transparent;
+            display: block;
+            width: 0;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col justify-between selection:bg-pink-300 selection:text-pink-900">
+
+    <!-- TOP HEADER / NAVBAR -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b-4 border-amber-300 shadow-md transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Mascot -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('beranda')">
+                    <div class="w-12 h-12 bg-amber-400 rounded-full flex items-center justify-center text-white text-2xl shadow-lg border-2 border-white transform hover:scale-110 transition">
+                        <i class="fa-solid fa-pencil animate-bounce"></i>
+                    </div>
+                    <div>
+                        <span class="font-heading text-2xl sm:text-3xl text-emerald-600 tracking-wide block leading-none">PenaPintar</span>
+                        <span class="text-xs font-bold text-amber-500 uppercase tracking-widest">Tanda Baca SD 3-4</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Buttons -->
+                <nav class="hidden md:flex space-x-2 lg:space-x-4">
+                    <button onclick="switchTab('beranda')" id="nav-beranda" class="nav-btn px-4 py-2 rounded-2xl font-bold text-slate-700 hover:bg-pastelBlue transition flex items-center space-x-2">
+                        <i class="fa-solid fa-house text-cyan-500"></i>
+                        <span>Beranda</span>
+                    </button>
+                    <button onclick="switchTab('materi')" id="nav-materi" class="nav-btn px-4 py-2 rounded-2xl font-bold text-slate-700 hover:bg-pastelPink transition flex items-center space-x-2">
+                        <i class="fa-solid fa-book-open text-pink-500"></i>
+                        <span>Materi</span>
+                    </button>
+                    <button onclick="switchTab('media')" id="nav-media" class="nav-btn px-4 py-2 rounded-2xl font-bold text-slate-700 hover:bg-pastelYellow transition flex items-center space-x-2">
+                        <i class="fa-solid fa-gamepad text-amber-500"></i>
+                        <span>Media</span>
+                    </button>
+                    <button onclick="switchTab('rpp')" id="nav-rpp" class="nav-btn px-4 py-2 rounded-2xl font-bold text-slate-700 hover:bg-pastelPurple transition flex items-center space-x-2">
+                        <i class="fa-solid fa-clipboard-list text-purple-500"></i>
+                        <span>RPP Guru</span>
+                    </button>
+                    <button onclick="switchTab('lkpd')" id="nav-lkpd" class="nav-btn px-5 py-2 rounded-2xl font-bold text-white bg-emerald-500 hover:bg-emerald-600 shadow-md hover:shadow-lg transition flex items-center space-x-2 transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>LKPD Interaktif</span>
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b-4 border-amber-300 px-4 pt-2 pb-4 space-y-2 shadow-xl">
+            <button onclick="switchTab('beranda'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl font-bold text-slate-700 hover:bg-pastelBlue flex items-center space-x-3">
+                <i class="fa-solid fa-house text-cyan-500 w-6"></i><span>Beranda</span>
+            </button>
+            <button onclick="switchTab('materi'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl font-bold text-slate-700 hover:bg-pastelPink flex items-center space-x-3">
+                <i class="fa-solid fa-book-open text-pink-500 w-6"></i><span>Materi Pembelajaran</span>
+            </button>
+            <button onclick="switchTab('media'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl font-bold text-slate-700 hover:bg-pastelYellow flex items-center space-x-3">
+                <i class="fa-solid fa-gamepad text-amber-500 w-6"></i><span>Media Interaktif</span>
+            </button>
+            <button onclick="switchTab('rpp'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl font-bold text-slate-700 hover:bg-pastelPurple flex items-center space-x-3">
+                <i class="fa-solid fa-clipboard-list text-purple-500 w-6"></i><span>RPP Guru</span>
+            </button>
+            <button onclick="switchTab('lkpd'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl font-bold text-white bg-emerald-500 flex items-center space-x-3">
+                <i class="fa-solid fa-pen-to-square w-6"></i><span>LKPD Interaktif</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= 1. TAB BERANDA ================= -->
+        <section id="tab-beranda" class="tab-content block space-y-12">
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-r from-sky-300 via-teal-200 to-amber-200 rounded-3xl p-8 sm:p-12 shadow-xl border-4 border-white overflow-hidden">
+                <!-- Decorative background elements -->
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/30 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute bottom-0 right-1/4 w-32 h-32 bg-amber-300/30 rounded-full blur-xl pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
+                    <div class="md:col-span-7 space-y-6 text-center md:text-left">
+                        <span class="inline-block bg-white text-emerald-700 text-sm font-extrabold px-4 py-1.5 rounded-full shadow-md border-2 border-emerald-300">
+                            <i class="fa-solid fa-star text-amber-400 mr-1"></i> Bahasa Indonesia SD Kelas 3 & 4
+                        </span>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-800 leading-tight">
+                            Belajar Tanda Baca Jadi <span class="text-pink-600 underline decoration-wavy decoration-amber-400">Menyenangkan!</span>
+                        </h1>
+                        <p class="text-lg text-slate-700 font-semibold max-w-xl">
+                            Halo Teman-Teman Cerdas! Yuk, petualangan mengenal simbol tanda baca Bahasa Indonesia lengkap dengan lagu, permainan interaktif, dan kuis seru!
+                        </p>
+                        <div class="flex flex-wrap justify-center md:justify-start gap-4 pt-2">
+                            <button onclick="switchTab('materi')" class="px-8 py-4 bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold rounded-2xl shadow-lg border-b-4 border-amber-600 active:translate-y-1 transition transform flex items-center space-x-3 text-lg">
+                                <span>Mulai Belajar</span>
+                                <i class="fa-solid fa-circle-arrow-right"></i>
+                            </button>
+                            <button onclick="switchTab('media')" class="px-8 py-4 bg-white hover:bg-slate-50 text-emerald-600 font-extrabold rounded-2xl shadow-lg border-2 border-emerald-400 active:translate-y-1 transition transform flex items-center space-x-2 text-lg">
+                                <i class="fa-solid fa-play text-amber-500"></i>
+                                <span>Bermain Media</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Cartoon Mascot Graphic -->
+                    <div class="md:col-span-5 flex justify-center">
+                        <div class="relative w-64 h-64 sm:w-72 sm:h-72 animate-float">
+                            <!-- Chalkboard / Card BG -->
+                            <div class="w-full h-full bg-emerald-800 rounded-3xl border-8 border-amber-800 shadow-2xl flex flex-col items-center justify-center p-6 text-white relative">
+                                <div class="absolute top-2 left-4 text-xs font-mono text-emerald-300">Papan Tulis</div>
+                                <div class="text-5xl sm:text-6xl font-extrabold space-x-2 text-amber-300 my-2">
+                                    <span>.</span> <span>,</span> <span>?</span> <span>!</span>
+                                </div>
+                                <p class="text-center font-heading text-xl text-emerald-100 mt-2">
+                                    "Ayo Tulis dengan Benar!"
+                                </p>
+                            </div>
+                            <!-- Floating decorative badge -->
+                            <div class="absolute -bottom-4 -left-4 bg-white p-3 rounded-2xl shadow-xl flex items-center space-x-2 border-2 border-pink-300 animate-float-delayed">
+                                <span class="text-3xl">🎒</span>
+                                <div class="text-left">
+                                    <p class="text-xs font-bold text-slate-500">Siap Belajar?</p>
+                                    <p class="text-sm font-extrabold text-pink-600">Pasti Bisa!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Navigation Menu Cards -->
+            <div class="space-y-6">
+                <div class="text-center">
+                    <h2 class="text-3xl font-extrabold text-slate-800">Pilih Menu Pembelajaran</h2>
+                    <p class="text-slate-600 font-semibold">Klik salah satu kartu di bawah ini untuk memulai!</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1: Materi -->
+                    <div onclick="switchTab('materi')" class="cursor-pointer bg-pastelPink/80 hover:bg-pastelPink border-3 border-pink-300 rounded-3xl p-6 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-2 flex flex-col justify-between h-full group">
+                        <div>
+                            <div class="w-16 h-16 bg-pink-400 text-white rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition shadow-md">
+                                <i class="fa-solid fa-book-open-reader"></i>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-slate-800 mb-2">1. Materi</h3>
+                            <p class="text-slate-600 text-sm font-medium">Penjelasan lengkap 6 jenis tanda baca & huruf kapital beserta contohnya.</p>
+                        </div>
+                        <div class="mt-6 flex items-center text-pink-600 font-extrabold text-sm group-hover:translate-x-2 transition">
+                            <span>Pelajari Materi</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Media -->
+                    <div onclick="switchTab('media')" class="cursor-pointer bg-pastelYellow/80 hover:bg-pastelYellow border-3 border-amber-300 rounded-3xl p-6 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-2 flex flex-col justify-between h-full group">
+                        <div>
+                            <div class="w-16 h-16 bg-amber-400 text-white rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition shadow-md">
+                                <i class="fa-solid fa-puzzle-piece"></i>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-slate-800 mb-2">2. Media</h3>
+                            <p class="text-slate-600 text-sm font-medium">Kartu pintar interaktif, tebak tanda baca, papan kalimat, & poster digital.</p>
+                        </div>
+                        <div class="mt-6 flex items-center text-amber-700 font-extrabold text-sm group-hover:translate-x-2 transition">
+                            <span>Mainkan Media</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: RPP -->
+                    <div onclick="switchTab('rpp')" class="cursor-pointer bg-pastelPurple/80 hover:bg-pastelPurple border-3 border-purple-300 rounded-3xl p-6 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-2 flex flex-col justify-between h-full group">
+                        <div>
+                            <div class="w-16 h-16 bg-purple-400 text-white rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition shadow-md">
+                                <i class="fa-solid fa-chalkboard-user"></i>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-slate-800 mb-2">3. RPP Guru</h3>
+                            <p class="text-slate-600 text-sm font-medium">Rencana Pelaksanaan Pembelajaran lengkap, metode, & rubrik penilaian.</p>
+                        </div>
+                        <div class="mt-6 flex items-center text-purple-600 font-extrabold text-sm group-hover:translate-x-2 transition">
+                            <span>Lihat RPP</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: LKPD -->
+                    <div onclick="switchTab('lkpd')" class="cursor-pointer bg-pastelGreen/80 hover:bg-pastelGreen border-3 border-emerald-300 rounded-3xl p-6 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-2 flex flex-col justify-between h-full group">
+                        <div>
+                            <div class="w-16 h-16 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition shadow-md">
+                                <i class="fa-solid fa-file-pen"></i>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-slate-800 mb-2">4. LKPD Interaktif</h3>
+                            <p class="text-slate-600 text-sm font-medium">Lembar kerja siswa interaktif 5 aktivitas seru dengan periksa nilai otomatis!</p>
+                        </div>
+                        <div class="mt-6 flex items-center text-emerald-700 font-extrabold text-sm group-hover:translate-x-2 transition">
+                            <span>Kerjakan LKPD</span> <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Features Banner -->
+            <div class="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center space-x-4">
+                    <div class="w-14 h-14 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-800">Fitur Suara Interaktif</h4>
+                        <p class="text-slate-600 text-sm">Setiap kartu pintar dilengkapi dengan fitur pembaca kalimat Web Speech sintetis suara!</p>
+                    </div>
+                </div>
+                <button onclick="playSoundEffect('star'); alert('🔊 Suara audio web interaktif siap digunakan!')" class="px-5 py-3 bg-sky-100 hover:bg-sky-200 text-sky-700 font-extrabold rounded-xl border border-sky-300 transition text-sm flex-shrink-0">
+                    <i class="fa-solid fa-waveform mr-2"></i>Tes Efek Suara
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 2. TAB MATERI PEMBELAJARAN ================= -->
+        <section id="tab-materi" class="tab-content hidden space-y-10">
+            <!-- Header section -->
+            <div class="bg-gradient-to-r from-pink-200 via-purple-100 to-indigo-100 rounded-3xl p-8 border-4 border-white shadow-lg text-center relative overflow-hidden">
+                <span class="bg-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Modul Pembelajaran</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-800 mt-2">Mengenal & Memahami Tanda Baca</h2>
+                <p class="text-slate-600 font-medium max-w-2xl mx-auto mt-2">
+                    Mari kita pelajari simbol-simbol ajaib dalam tulisan Bahasa Indonesia agar kalimatmu lebih mudah dibaca dan dimengerti!
+                </p>
+            </div>
+
+            <!-- Sub A: Pengertian Tanda Baca -->
+            <div class="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center space-x-3 text-pink-600">
+                    <div class="w-10 h-10 bg-pink-100 rounded-xl flex items-center justify-center font-bold text-xl">A</div>
+                    <h3 class="text-2xl font-extrabold text-slate-800">Apa itu Tanda Baca?</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <div class="md:col-span-8 text-slate-700 leading-relaxed text-lg space-y-3">
+                        <p>
+                            <span class="font-bold text-pink-600">Tanda baca</span> adalah simbol-simbol khusus yang digunakan dalam tulisan untuk membantu pembaca memahami maksud dari sebuah kalimat.
+                        </p>
+                        <p class="bg-pastelPink/60 p-4 rounded-2xl border-l-4 border-pink-400 font-semibold text-slate-800">
+                            💡 <strong>Fungsi Utama:</strong> Memberi tahu pembaca kapan harus <em>berhenti sejenak</em>, kapan <em>selesai membaca</em>, kapan kalimat itu <em>bertanya</em>, atau memberikan <em>penekanan emosi</em>.
+                        </p>
+                    </div>
+                    <div class="md:col-span-4 bg-pastelYellow p-6 rounded-2xl border-2 border-amber-300 text-center">
+                        <span class="text-5xl">🛑 ❓ ❗️</span>
+                        <p class="font-extrabold text-amber-900 mt-2">Tanpa Tanda Baca...</p>
+                        <p class="text-xs text-amber-800">Kalimat akan membingungkan dan sulit dibaca dengan intonasi yang pas!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub B: Macam-Macam Tanda Baca -->
+            <div class="space-y-6">
+                <div class="flex items-center space-x-3 text-emerald-600">
+                    <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center font-bold text-xl">B</div>
+                    <h3 class="text-2xl font-extrabold text-slate-800">6 Macam Tanda Baca & Pentingnya</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 1. Titik -->
+                    <div class="bg-white rounded-3xl p-6 border-2 border-sky-200 shadow-md hover:border-sky-400 transition space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-12 h-12 bg-sky-400 text-white text-3xl font-extrabold rounded-2xl flex items-center justify-center shadow">.</span>
+                                <div>
+                                    <h4 class="text-xl font-extrabold text-slate-800">1. Tanda Titik ( . )</h4>
+                                    <span class="text-xs bg-sky-100 text-sky-700 px-2 py-0.5 rounded font-bold">Pengakhir Kalimat Berita</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm">
+                            Tanda titik digunakan pada akhir kalimat pernyataan atau berita untuk menandakan bahwa kalimat tersebut sudah selesai sempurna.
+                        </p>
+                        <div class="bg-pastelBlue/70 p-4 rounded-2xl border-l-4 border-sky-400">
+                            <p class="text-xs font-bold text-sky-800 uppercase">Contoh Kalimat:</p>
+                            <p class="text-slate-800 font-bold text-base mt-1">"Budi pergi ke sekolah bersama temannya<span class="text-red-500 font-black text-xl">.</span>"</p>
+                        </div>
+                    </div>
+
+                    <!-- 2. Koma -->
+                    <div class="bg-white rounded-3xl p-6 border-2 border-emerald-200 shadow-md hover:border-emerald-400 transition space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-12 h-12 bg-emerald-400 text-white text-3xl font-extrabold rounded-2xl flex items-center justify-center shadow">,</span>
+                                <div>
+                                    <h4 class="text-xl font-extrabold text-slate-800">2. Tanda Koma ( , )</h4>
+                                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold">Pemisah Daftar / Jeda</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm">
+                            Digunakan di tengah kalimat untuk memisahkan unsur-unsur rincian atau daftar barang dan memberikan jeda istirahat sejenak saat membaca.
+                        </p>
+                        <div class="bg-pastelGreen/70 p-4 rounded-2xl border-l-4 border-emerald-400">
+                            <p class="text-xs font-bold text-emerald-800 uppercase">Contoh Kalimat:</p>
+                            <p class="text-slate-800 font-bold text-base mt-1">"Ibu membeli apel<span class="text-red-500 font-black text-xl">,</span> mangga<span class="text-red-500 font-black text-xl">,</span> dan jeruk di pasar."</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Tanda Tanya -->
+                    <div class="bg-white rounded-3xl p-6 border-2 border-amber-200 shadow-md hover:border-amber-400 transition space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-12 h-12 bg-amber-400 text-white text-3xl font-extrabold rounded-2xl flex items-center justify-center shadow">?</span>
+                                <div>
+                                    <h4 class="text-xl font-extrabold text-slate-800">3. Tanda Tanya ( ? )</h4>
+                                    <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded font-bold">Kalimat Pertanyaan</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm">
+                            Digunakan pada akhir kalimat tanya ketika seseorang ingin menanyakan sesuatu dan membutuhkan jawaban.
+                        </p>
+                        <div class="bg-pastelYellow/70 p-4 rounded-2xl border-l-4 border-amber-400">
+                            <p class="text-xs font-bold text-amber-800 uppercase">Contoh Kalimat:</p>
+                            <p class="text-slate-800 font-bold text-base mt-1">"Apakah kamu sudah sarapan pagi ini<span class="text-red-500 font-black text-xl">?</span>"</p>
+                        </div>
+                    </div>
+
+                    <!-- 4. Tanda Seru -->
+                    <div class="bg-white rounded-3xl p-6 border-2 border-pink-200 shadow-md hover:border-pink-400 transition space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-12 h-12 bg-pink-400 text-white text-3xl font-extrabold rounded-2xl flex items-center justify-center shadow">!</span>
+                                <div>
+                                    <h4 class="text-xl font-extrabold text-slate-800">4. Tanda Seru ( ! )</h4>
+                                    <span class="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded font-bold">Perintah & Perasaan Kuat</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm">
+                            Digunakan pada akhir kalimat perintah, ajakan, atau untuk menunjukkan ungkapan perasaan yang kuat (semangat, kaget, kagum).
+                        </p>
+                        <div class="bg-pastelPink/70 p-4 rounded-2xl border-l-4 border-pink-400">
+                            <p class="text-xs font-bold text-pink-800 uppercase">Contoh Kalimat:</p>
+                            <p class="text-slate-800 font-bold text-base mt-1">"Ayo, belajar bersama dengan gembira<span class="text-red-500 font-black text-xl">!</span>"</p>
+                        </div>
+                    </div>
+
+                    <!-- 5. Tanda Petik -->
+                    <div class="bg-white rounded-3xl p-6 border-2 border-purple-200 shadow-md hover:border-purple-400 transition space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-12 h-12 bg-purple-400 text-white text-2xl font-extrabold rounded-2xl flex items-center justify-center shadow">" "</span>
+                                <div>
+                                    <h4 class="text-xl font-extrabold text-slate-800">5. Tanda Petik ( "..." )</h4>
+                                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded font-bold">Petikan Perkataan Langsung</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm">
+                            Digunakan untuk mengapit ucapan atau perkataan langsung dari seseorang dalam kalimat percakapan.
+                        </p>
+                        <div class="bg-pastelPurple/70 p-4 rounded-2xl border-l-4 border-purple-400">
+                            <p class="text-xs font-bold text-purple-800 uppercase">Contoh Kalimat:</p>
+                            <p class="text-slate-800 font-bold text-base mt-1">Ayah berkata, <span class="text-red-500 font-black text-xl">"</span>Ayo kita makan malam bersama!<span class="text-red-500 font-black text-xl">"</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 6. Huruf Kapital -->
+                    <div class="bg-white rounded-3xl p-6 border-2 border-orange-200 shadow-md hover:border-orange-400 transition space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <span class="w-12 h-12 bg-orange-400 text-white text-2xl font-extrabold rounded-2xl flex items-center justify-center shadow">Aa</span>
+                                <div>
+                                    <h4 class="text-xl font-extrabold text-slate-800">6. Huruf Kapital</h4>
+                                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-bold">Awal Kalimat & Nama</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm">
+                            Digunakan pada huruf pertama awal kalimat, serta penulisan nama orang, tempat/kota, hari, agama, dan nama khusus.
+                        </p>
+                        <div class="bg-pastelOrange/70 p-4 rounded-2xl border-l-4 border-orange-400">
+                            <p class="text-xs font-bold text-orange-800 uppercase">Contoh Kalimat:</p>
+                            <p class="text-slate-800 font-bold text-base mt-1"><span class="text-red-500 font-black underline">D</span>ina dan <span class="text-red-500 font-black underline">B</span>udi pergi liburan ke <span class="text-red-500 font-black underline">J</span>akarta.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub C: Rangkuman Tabel Materi -->
+            <div class="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-lg space-y-6">
+                <div class="flex items-center space-x-3 text-purple-600">
+                    <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center font-bold text-xl">C</div>
+                    <h3 class="text-2xl font-extrabold text-slate-800">Rangkuman Singkat Tanda Baca</h3>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[600px]">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-emerald-400 to-teal-400 text-white">
+                                <th class="p-4 rounded-tl-2xl font-extrabold">Simbol</th>
+                                <th class="p-4 font-extrabold">Nama Tanda Baca</th>
+                                <th class="p-4 font-extrabold">Fungsi Utama</th>
+                                <th class="p-4 rounded-tr-2xl font-extrabold">Contoh Singkat</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+                            <tr class="hover:bg-pastelBlue/40 transition">
+                                <td class="p-4 font-extrabold text-2xl text-sky-600">.</td>
+                                <td class="p-4 font-bold">Titik</td>
+                                <td class="p-4">Mengakhiri kalimat berita/pernyataan.</td>
+                                <td class="p-4 italic">Saya membaca buku.</td>
+                            </tr>
+                            <tr class="hover:bg-pastelGreen/40 transition">
+                                <td class="p-4 font-extrabold text-2xl text-emerald-600">,</td>
+                                <td class="p-4 font-bold">Koma</td>
+                                <td class="p-4">Memisahkan daftar/rincian & jeda.</td>
+                                <td class="p-4 italic">Buku, pensil, dan penggaris.</td>
+                            </tr>
+                            <tr class="hover:bg-pastelYellow/40 transition">
+                                <td class="p-4 font-extrabold text-2xl text-amber-600">?</td>
+                                <td class="p-4 font-bold">Tanda Tanya</td>
+                                <td class="p-4">Akhir kalimat pertanyaan.</td>
+                                <td class="p-4 italic">Kapan kamu pulang?</td>
+                            </tr>
+                            <tr class="hover:bg-pastelPink/40 transition">
+                                <td class="p-4 font-extrabold text-2xl text-pink-600">!</td>
+                                <td class="p-4 font-bold">Tanda Seru</td>
+                                <td class="p-4">Kalimat perintah atau ajakan.</td>
+                                <td class="p-4 italic">Tutup pintu itu!</td>
+                            </tr>
+                            <tr class="hover:bg-pastelPurple/40 transition">
+                                <td class="p-4 font-extrabold text-2xl text-purple-600">" "</td>
+                                <td class="p-4 font-bold">Tanda Petik</td>
+                                <td class="p-4">Mengapit percakapan langsung.</td>
+                                <td class="p-4 italic">Ibu berkata, "Halo!"</td>
+                            </tr>
+                            <tr class="hover:bg-pastelOrange/40 transition">
+                                <td class="p-4 font-extrabold text-xl text-orange-600">ABC</td>
+                                <td class="p-4 font-bold">Huruf Kapital</td>
+                                <td class="p-4">Awal kalimat & nama orang/tempat.</td>
+                                <td class="p-4 italic">Siti tinggal di Bandung.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. TAB MEDIA PEMBELAJARAN ================= -->
+        <section id="tab-media" class="tab-content hidden space-y-12">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-amber-200 via-orange-100 to-yellow-100 rounded-3xl p-8 border-4 border-white shadow-lg text-center">
+                <span class="bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Area Interaktif</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-800 mt-2">Media Pembelajaran Seru</h2>
+                <p class="text-slate-600 font-medium max-w-2xl mx-auto mt-2">
+                    Cobalah bermain dengan Kartu Pintar, Tebak Tanda Baca, Papan Kalimat, dan Unduh Poster Digital!
+                </p>
+            </div>
+
+            <!-- Media A: Kartu Pintar Tanda Baca (3D Flip Cards) -->
+            <div class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-slate-800 flex items-center gap-2">
+                            <span>A. Kartu Pintar Tanda Baca</span>
+                            <span class="text-xs bg-amber-200 text-amber-800 px-3 py-1 rounded-full font-bold">Klik kartu untuk membalik!</span>
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Flashcard 1 -->
+                    <div class="perspective h-64 cursor-pointer" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-full duration-500 transform-style-3d shadow-lg rounded-3xl">
+                            <!-- Front -->
+                            <div class="absolute w-full h-full bg-sky-400 rounded-3xl p-6 flex flex-col justify-between items-center text-white backface-hidden border-4 border-sky-200">
+                                <span class="self-end text-xs font-extrabold bg-sky-600/40 px-3 py-1 rounded-full">KARTU PINTAR</span>
+                                <div class="text-center">
+                                    <span class="text-7xl font-extrabold block">.</span>
+                                    <p class="text-2xl font-extrabold mt-2">Tanda Titik</p>
+                                </div>
+                                <span class="text-xs font-bold underline">Klik untuk lihat fungsi & suara 🔊</span>
+                            </div>
+                            <!-- Back -->
+                            <div class="absolute w-full h-full bg-white rounded-3xl p-6 flex flex-col justify-between text-slate-800 rotate-y-180 backface-hidden border-4 border-sky-400">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-extrabold text-sky-600">Tanda Titik ( . )</h4>
+                                        <button onclick="event.stopPropagation(); speakText('Tanda titik digunakan di akhir kalimat berita. Contoh: Budi pergi ke sekolah.')" class="text-sky-500 hover:text-sky-700 text-xl">
+                                            <i class="fa-solid fa-volume-high"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mb-3"><strong>Fungsi:</strong> Mengakhiri kalimat berita atau pernyataan.</p>
+                                    <div class="bg-sky-50 p-3 rounded-xl border border-sky-200 text-xs font-semibold">
+                                        <strong>Contoh:</strong> "Budi pergi ke sekolah."
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-slate-400 text-center">Klik lagi untuk membalik</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 2 -->
+                    <div class="perspective h-64 cursor-pointer" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-full duration-500 transform-style-3d shadow-lg rounded-3xl">
+                            <!-- Front -->
+                            <div class="absolute w-full h-full bg-emerald-400 rounded-3xl p-6 flex flex-col justify-between items-center text-white backface-hidden border-4 border-emerald-200">
+                                <span class="self-end text-xs font-extrabold bg-emerald-600/40 px-3 py-1 rounded-full">KARTU PINTAR</span>
+                                <div class="text-center">
+                                    <span class="text-7xl font-extrabold block">,</span>
+                                    <p class="text-2xl font-extrabold mt-2">Tanda Koma</p>
+                                </div>
+                                <span class="text-xs font-bold underline">Klik untuk lihat fungsi & suara 🔊</span>
+                            </div>
+                            <!-- Back -->
+                            <div class="absolute w-full h-full bg-white rounded-3xl p-6 flex flex-col justify-between text-slate-800 rotate-y-180 backface-hidden border-4 border-emerald-400">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-extrabold text-emerald-600">Tanda Koma ( , )</h4>
+                                        <button onclick="event.stopPropagation(); speakText('Tanda koma memisahkan unsur dalam daftar. Contoh: Ibu membeli apel, mangga, dan jeruk.')" class="text-emerald-500 hover:text-emerald-700 text-xl">
+                                            <i class="fa-solid fa-volume-high"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mb-3"><strong>Fungsi:</strong> Memisahkan rincian daftar & jeda membaca.</p>
+                                    <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 text-xs font-semibold">
+                                        <strong>Contoh:</strong> "Ibu membeli apel, mangga, dan jeruk."
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-slate-400 text-center">Klik lagi untuk membalik</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 3 -->
+                    <div class="perspective h-64 cursor-pointer" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-full duration-500 transform-style-3d shadow-lg rounded-3xl">
+                            <!-- Front -->
+                            <div class="absolute w-full h-full bg-amber-400 rounded-3xl p-6 flex flex-col justify-between items-center text-white backface-hidden border-4 border-amber-200">
+                                <span class="self-end text-xs font-extrabold bg-amber-600/40 px-3 py-1 rounded-full">KARTU PINTAR</span>
+                                <div class="text-center">
+                                    <span class="text-7xl font-extrabold block">?</span>
+                                    <p class="text-2xl font-extrabold mt-2">Tanda Tanya</p>
+                                </div>
+                                <span class="text-xs font-bold underline">Klik untuk lihat fungsi & suara 🔊</span>
+                            </div>
+                            <!-- Back -->
+                            <div class="absolute w-full h-full bg-white rounded-3xl p-6 flex flex-col justify-between text-slate-800 rotate-y-180 backface-hidden border-4 border-amber-400">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-extrabold text-amber-600">Tanda Tanya ( ? )</h4>
+                                        <button onclick="event.stopPropagation(); speakText('Tanda tanya digunakan di akhir kalimat pertanyaan. Contoh: Apakah kamu sudah sarapan?')" class="text-amber-500 hover:text-amber-700 text-xl">
+                                            <i class="fa-solid fa-volume-high"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mb-3"><strong>Fungsi:</strong> Menanyakan sesuatu di akhir kalimat.</p>
+                                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 text-xs font-semibold">
+                                        <strong>Contoh:</strong> "Apakah kamu sudah sarapan?"
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-slate-400 text-center">Klik lagi untuk membalik</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 4 -->
+                    <div class="perspective h-64 cursor-pointer" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-full duration-500 transform-style-3d shadow-lg rounded-3xl">
+                            <!-- Front -->
+                            <div class="absolute w-full h-full bg-pink-400 rounded-3xl p-6 flex flex-col justify-between items-center text-white backface-hidden border-4 border-pink-200">
+                                <span class="self-end text-xs font-extrabold bg-pink-600/40 px-3 py-1 rounded-full">KARTU PINTAR</span>
+                                <div class="text-center">
+                                    <span class="text-7xl font-extrabold block">!</span>
+                                    <p class="text-2xl font-extrabold mt-2">Tanda Seru</p>
+                                </div>
+                                <span class="text-xs font-bold underline">Klik untuk lihat fungsi & suara 🔊</span>
+                            </div>
+                            <!-- Back -->
+                            <div class="absolute w-full h-full bg-white rounded-3xl p-6 flex flex-col justify-between text-slate-800 rotate-y-180 backface-hidden border-4 border-pink-400">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-extrabold text-pink-600">Tanda Seru ( ! )</h4>
+                                        <button onclick="event.stopPropagation(); speakText('Tanda seru digunakan untuk kalimat perintah atau ajakan. Contoh: Ayo belajar bersama!')" class="text-pink-500 hover:text-pink-700 text-xl">
+                                            <i class="fa-solid fa-volume-high"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mb-3"><strong>Fungsi:</strong> Kalimat perintah, ajakan, dan emosi kuat.</p>
+                                    <div class="bg-pink-50 p-3 rounded-xl border border-pink-200 text-xs font-semibold">
+                                        <strong>Contoh:</strong> "Ayo, belajar bersama!"
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-slate-400 text-center">Klik lagi untuk membalik</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 5 -->
+                    <div class="perspective h-64 cursor-pointer" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-full duration-500 transform-style-3d shadow-lg rounded-3xl">
+                            <!-- Front -->
+                            <div class="absolute w-full h-full bg-purple-400 rounded-3xl p-6 flex flex-col justify-between items-center text-white backface-hidden border-4 border-purple-200">
+                                <span class="self-end text-xs font-extrabold bg-purple-600/40 px-3 py-1 rounded-full">KARTU PINTAR</span>
+                                <div class="text-center">
+                                    <span class="text-6xl font-extrabold block mt-2">" "</span>
+                                    <p class="text-2xl font-extrabold mt-2">Tanda Petik</p>
+                                </div>
+                                <span class="text-xs font-bold underline">Klik untuk lihat fungsi & suara 🔊</span>
+                            </div>
+                            <!-- Back -->
+                            <div class="absolute w-full h-full bg-white rounded-3xl p-6 flex flex-col justify-between text-slate-800 rotate-y-180 backface-hidden border-4 border-purple-400">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-extrabold text-purple-600">Tanda Petik ( "..." )</h4>
+                                        <button onclick="event.stopPropagation(); speakText('Tanda petik mengapit ucapan langsung. Contoh: Ayah berkata, Ayo makan malam!')" class="text-purple-500 hover:text-purple-700 text-xl">
+                                            <i class="fa-solid fa-volume-high"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mb-3"><strong>Fungsi:</strong> Mengapit dialog/perkataan langsung.</p>
+                                    <div class="bg-purple-50 p-3 rounded-xl border border-purple-200 text-xs font-semibold">
+                                        <strong>Contoh:</strong> Ayah berkata, "Ayo makan malam!"
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-slate-400 text-center">Klik lagi untuk membalik</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard 6 -->
+                    <div class="perspective h-64 cursor-pointer" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-full duration-500 transform-style-3d shadow-lg rounded-3xl">
+                            <!-- Front -->
+                            <div class="absolute w-full h-full bg-orange-400 rounded-3xl p-6 flex flex-col justify-between items-center text-white backface-hidden border-4 border-orange-200">
+                                <span class="self-end text-xs font-extrabold bg-orange-600/40 px-3 py-1 rounded-full">KARTU PINTAR</span>
+                                <div class="text-center">
+                                    <span class="text-6xl font-extrabold block">Aa</span>
+                                    <p class="text-2xl font-extrabold mt-2">Huruf Kapital</p>
+                                </div>
+                                <span class="text-xs font-bold underline">Klik untuk lihat fungsi & suara 🔊</span>
+                            </div>
+                            <!-- Back -->
+                            <div class="absolute w-full h-full bg-white rounded-3xl p-6 flex flex-col justify-between text-slate-800 rotate-y-180 backface-hidden border-4 border-orange-400">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-extrabold text-orange-600">Huruf Kapital</h4>
+                                        <button onclick="event.stopPropagation(); speakText('Huruf kapital digunakan pada awal kalimat dan nama orang atau tempat. Contoh: Dina pergi ke Jakarta.')" class="text-orange-500 hover:text-orange-700 text-xl">
+                                            <i class="fa-solid fa-volume-high"></i>
+                                        </button>
+                                    </div>
+                                    <p class="text-xs text-slate-600 mb-3"><strong>Fungsi:</strong> Huruf besar awal kalimat & nama orang/tempat.</p>
+                                    <div class="bg-orange-50 p-3 rounded-xl border border-orange-200 text-xs font-semibold">
+                                        <strong>Contoh:</strong> "Dina pergi ke Jakarta."
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-slate-400 text-center">Klik lagi untuk membalik</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Media B: Mini Game Tebak Tanda Baca -->
+            <div class="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-md space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-slate-800">B. Permainan: Tebak Tanda Baca!</h3>
+                        <p class="text-slate-600 text-sm">Pilih tanda baca yang tepat untuk melengkapi pertanyaan di bawah ini.</p>
+                    </div>
+                    <span id="game-score-badge" class="bg-amber-100 text-amber-800 font-extrabold text-sm px-4 py-2 rounded-2xl border border-amber-300">
+                        Skor Mini Game: <span id="mini-game-score" class="text-amber-600 text-lg">0</span> Poin
+                    </span>
+                </div>
+
+                <div class="bg-pastelYellow/50 p-6 rounded-3xl border-2 border-amber-300 text-center space-y-6">
+                    <p class="text-xs font-bold text-amber-800 uppercase tracking-widest">Soal Tebakan:</p>
+                    <div id="tebak-question-box" class="text-2xl sm:text-3xl font-extrabold text-slate-800 min-h-[60px] flex items-center justify-center">
+                        "Dimanakah rumah kamu tinggal<span class="text-pink-600 underline px-2">?</span>"
+                    </div>
+
+                    <!-- Option Buttons -->
+                    <div id="tebak-options-container" class="flex flex-wrap justify-center gap-4">
+                        <!-- Dynamic Options injected via JS -->
+                    </div>
+
+                    <div id="tebak-feedback" class="font-bold text-lg min-h-[30px]"></div>
+                </div>
+            </div>
+
+            <!-- Media C: Papan Kalimat Interactive -->
+            <div class="bg-emerald-900 rounded-3xl p-8 border-8 border-amber-800 shadow-2xl text-white space-y-6">
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid fa-chalkboard text-3xl text-amber-300"></i>
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-amber-300">C. Papan Kalimat Pintar</h3>
+                        <p class="text-emerald-200 text-xs">Klik tombol simbol di bawah untuk memasukkannya ke dalam kotak papan!</p>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-950/80 p-6 rounded-2xl border-2 border-emerald-700 space-y-4">
+                    <p class="text-emerald-300 text-sm font-semibold">Kalimat Papan Tulis:</p>
+                    <div class="text-xl sm:text-2xl font-heading tracking-wide flex flex-wrap items-center gap-2">
+                        <span>Wah, indah sekali pemandangan pegunungan ini</span>
+                        <span id="papan-target" class="w-12 h-12 bg-emerald-800 rounded-xl border-2 border-dashed border-amber-300 flex items-center justify-center text-amber-300 font-extrabold text-3xl shadow-inner">?</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <p class="text-xs text-emerald-200 font-bold">Pilih Tanda Baca yang Cocok:</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="checkPapanChoice('.')" class="px-5 py-3 bg-white text-emerald-900 hover:bg-amber-300 font-extrabold text-2xl rounded-2xl shadow transition transform hover:scale-105">.</button>
+                        <button onclick="checkPapanChoice(',')" class="px-5 py-3 bg-white text-emerald-900 hover:bg-amber-300 font-extrabold text-2xl rounded-2xl shadow transition transform hover:scale-105">,</button>
+                        <button onclick="checkPapanChoice('?')" class="px-5 py-3 bg-white text-emerald-900 hover:bg-amber-300 font-extrabold text-2xl rounded-2xl shadow transition transform hover:scale-105">?</button>
+                        <button onclick="checkPapanChoice('!')" class="px-5 py-3 bg-white text-emerald-900 hover:bg-amber-300 font-extrabold text-2xl rounded-2xl shadow transition transform hover:scale-105">!</button>
+                    </div>
+                    <p id="papan-feedback" class="text-sm font-bold mt-2 min-h-[24px]"></p>
+                </div>
+            </div>
+
+            <!-- Media D: Poster Digital Tanda Baca (Printable) -->
+            <div class="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-md space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-2xl font-extrabold text-slate-800">D. Poster Digital Tanda Baca</h3>
+                        <p class="text-slate-600 text-sm">Poster rangkuman visual berwarna-warni yang siap dicetak untuk hiasan kelas!</p>
+                    </div>
+                    <button onclick="window.print()" class="px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white font-extrabold rounded-2xl shadow-md transition flex items-center space-x-2">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak Poster Digital</span>
+                    </button>
+                </div>
+
+                <!-- Poster Box to Print -->
+                <div id="printable-poster" class="bg-gradient-to-b from-sky-100 via-pink-100 to-amber-100 p-8 rounded-3xl border-4 border-amber-400 shadow-xl space-y-6">
+                    <div class="text-center border-b-4 border-amber-300 pb-4">
+                        <span class="text-3xl">🎨 📚 ✏️</span>
+                        <h2 class="text-3xl font-black text-slate-800 uppercase tracking-wider">POSTER TANDA BACA SD</h2>
+                        <p class="text-emerald-700 font-bold">Mengenal Simbol Bahasa Indonesia Kelas 3 - 4</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div class="bg-white/90 p-4 rounded-2xl border-2 border-sky-300 text-center">
+                            <span class="text-4xl font-extrabold text-sky-500 block">.</span>
+                            <h4 class="font-extrabold text-slate-800 text-lg">Tanda Titik</h4>
+                            <p class="text-xs text-slate-600 mt-1">Mengakhiri kalimat berita/pernyataan.</p>
+                        </div>
+                        <div class="bg-white/90 p-4 rounded-2xl border-2 border-emerald-300 text-center">
+                            <span class="text-4xl font-extrabold text-emerald-500 block">,</span>
+                            <h4 class="font-extrabold text-slate-800 text-lg">Tanda Koma</h4>
+                            <p class="text-xs text-slate-600 mt-1">Pemisah rincian daftar & jeda membaca.</p>
+                        </div>
+                        <div class="bg-white/90 p-4 rounded-2xl border-2 border-amber-300 text-center">
+                            <span class="text-4xl font-extrabold text-amber-500 block">?</span>
+                            <h4 class="font-extrabold text-slate-800 text-lg">Tanda Tanya</h4>
+                            <p class="text-xs text-slate-600 mt-1">Digunakan pada akhir kalimat pertanyaan.</p>
+                        </div>
+                        <div class="bg-white/90 p-4 rounded-2xl border-2 border-pink-300 text-center">
+                            <span class="text-4xl font-extrabold text-pink-500 block">!</span>
+                            <h4 class="font-extrabold text-slate-800 text-lg">Tanda Seru</h4>
+                            <p class="text-xs text-slate-600 mt-1">Kalimat perintah, ajakan, & emosi kuat.</p>
+                        </div>
+                        <div class="bg-white/90 p-4 rounded-2xl border-2 border-purple-300 text-center">
+                            <span class="text-4xl font-extrabold text-purple-500 block">" "</span>
+                            <h4 class="font-extrabold text-slate-800 text-lg">Tanda Petik</h4>
+                            <p class="text-xs text-slate-600 mt-1">Mengapit percakapan/ucapan langsung.</p>
+                        </div>
+                        <div class="bg-white/90 p-4 rounded-2xl border-2 border-orange-300 text-center">
+                            <span class="text-3xl font-extrabold text-orange-500 block mt-1">ABC</span>
+                            <h4 class="font-extrabold text-slate-800 text-lg">Huruf Kapital</h4>
+                            <p class="text-xs text-slate-600 mt-1">Awal kalimat & penulisan nama orang/tempat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. TAB RPP GURU ================= -->
+        <section id="tab-rpp" class="tab-content hidden space-y-8">
+            <div class="bg-gradient-to-r from-purple-200 via-indigo-100 to-sky-100 rounded-3xl p-8 border-4 border-white shadow-lg text-center">
+                <span class="bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Perangkat Pembelajaran</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-800 mt-2">Rencana Pelaksanaan Pembelajaran (RPP)</h2>
+                <p class="text-slate-600 font-medium max-w-2xl mx-auto mt-2">
+                    Panduan modul ajar terlengkap untuk Bapak/Ibu Guru Bahasa Indonesia SD Kelas 3–4.
+                </p>
+            </div>
+
+            <!-- Identity Card -->
+            <div class="bg-white rounded-3xl p-6 border-2 border-purple-200 shadow-md">
+                <h3 class="text-xl font-extrabold text-purple-700 mb-4 border-b-2 border-purple-100 pb-2">📌 Identitas RPP</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-sm font-semibold">
+                    <div class="bg-pastelPurple p-3 rounded-2xl">
+                        <span class="text-xs text-slate-500 block">Mata Pelajaran:</span>
+                        <span class="text-slate-800 font-bold">Bahasa Indonesia</span>
+                    </div>
+                    <div class="bg-pastelPurple p-3 rounded-2xl">
+                        <span class="text-xs text-slate-500 block">Kelas / Semester:</span>
+                        <span class="text-slate-800 font-bold">III - IV / Genap</span>
+                    </div>
+                    <div class="bg-pastelPurple p-3 rounded-2xl">
+                        <span class="text-xs text-slate-500 block">Alokasi Waktu:</span>
+                        <span class="text-slate-800 font-bold">2 x 35 Menit (1 Pertemuan)</span>
+                    </div>
+                    <div class="bg-pastelPurple p-3 rounded-2xl">
+                        <span class="text-xs text-slate-500 block">Topik Pembelajaran:</span>
+                        <span class="text-slate-800 font-bold">Mengenal & Menggunakan Tanda Baca</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RPP Details -->
+            <div class="bg-white rounded-3xl p-8 border-2 border-slate-200 shadow-md space-y-6">
+                <!-- A. Tujuan Pembelajaran -->
+                <div>
+                    <h4 class="text-xl font-extrabold text-slate-800 flex items-center space-x-2 text-purple-600 mb-3">
+                        <i class="fa-solid fa-bullseye"></i><span>A. Tujuan Pembelajaran</span>
+                    </h4>
+                    <ol class="list-decimal list-inside text-slate-700 space-y-2 text-sm sm:text-base font-medium pl-2">
+                        <li>Siswa mampu menjelaskan pengertian tanda baca dengan bahasa sendiri secara tepat.</li>
+                        <li>Siswa dapat mengidentifikasi 6 jenis tanda baca (titik, koma, tanya, seru, petik, & huruf kapital).</li>
+                        <li>Siswa mampu menjelaskan fungsi masing-masing tanda baca dalam kalimat dengan benar.</li>
+                        <li>Siswa mampu menentukan penggunaan tanda baca yang sesuai pada sebuah kalimat rumpang.</li>
+                        <li>Siswa dapat menulis kalimat sederhana menggunakan tanda baca dan huruf kapital secara tepat.</li>
+                        <li>Siswa menunjukkan sikap aktif, percaya diri, dan penuh semangat selama proses pembelajaran.</li>
+                    </ol>
+                </div>
+
+                <!-- B. Materi Pembelajaran -->
+                <div>
+                    <h4 class="text-xl font-extrabold text-slate-800 flex items-center space-x-2 text-purple-600 mb-3">
+                        <i class="fa-solid fa-book"></i><span>B. Materi Pembelajaran</span>
+                    </h4>
+                    <p class="text-slate-700 text-sm">
+                        Enam jenis tanda baca utama Bahasa Indonesia: Tanda Titik (.), Koma (,), Tanya (?), Seru (!), Petik ("..."), serta Aturan Penulisan Huruf Kapital pada awal kalimat dan nama diri.
+                    </p>
+                </div>
+
+                <!-- C. Metode Pembelajaran -->
+                <div>
+                    <h4 class="text-xl font-extrabold text-slate-800 flex items-center space-x-2 text-purple-600 mb-3">
+                        <i class="fa-solid fa-chalkboard-user"></i><span>C. Metode & Pendekatan Pembelajaran</span>
+                    </h4>
+                    <div class="flex flex-wrap gap-2 text-xs font-bold">
+                        <span class="bg-pink-100 text-pink-700 px-3 py-1.5 rounded-xl">Ceramah Interaktif</span>
+                        <span class="bg-amber-100 text-amber-700 px-3 py-1.5 rounded-xl">Tanya Jawab</span>
+                        <span class="bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-xl">Diskusi Kelompok Sederhana</span>
+                        <span class="bg-sky-100 text-sky-700 px-3 py-1.5 rounded-xl">Permainan Edukatif Media Interaktif</span>
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1.5 rounded-xl">Penugasan LKPD Interaktif</span>
+                    </div>
+                </div>
+
+                <!-- D. Langkah-Langkah Pembelajaran -->
+                <div>
+                    <h4 class="text-xl font-extrabold text-slate-800 flex items-center space-x-2 text-purple-600 mb-3">
+                        <i class="fa-solid fa-list-check"></i><span>D. Langkah-Langkah Pembelajaran</span>
+                    </h4>
+                    <div class="space-y-4">
+                        <div class="bg-sky-50 p-4 rounded-2xl border-l-4 border-sky-400">
+                            <h5 class="font-bold text-sky-800">1. Kegiatan Pendahuluan (10 Menit)</h5>
+                            <ul class="list-disc list-inside text-xs sm:text-sm text-slate-700 mt-1 space-y-1">
+                                <li>Guru membuka pembelajaran dengan salam hangat dan berdoa bersama.</li>
+                                <li>Guru mengecek kehadiran siswa serta pengondisian kelas ceria.</li>
+                                <li>Guru memberikan pertanyaan pemantik (Apersepsi): "Mengapa ada titik di akhir kalimat?"</li>
+                                <li>Guru menyampaikan tujuan pembelajaran hari ini.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-emerald-50 p-4 rounded-2xl border-l-4 border-emerald-400">
+                            <h5 class="font-bold text-emerald-800">2. Kegiatan Inti (50 Menit)</h5>
+                            <ul class="list-disc list-inside text-xs sm:text-sm text-slate-700 mt-1 space-y-1">
+                                <li>Guru menjelaskan materi tanda baca memanfaatkan media website interaktif PenaPintar.</li>
+                                <li>Siswa mengamati Kartu Pintar & Poster Digital tanda baca.</li>
+                                <li>Siswa bermain mini game Tebak Tanda Baca & Papan Kalimat bersama-sama.</li>
+                                <li>Siswa dibagi ke dalam kelompok untuk berdiskusi mengerjakan tantangan LKPD interaktif.</li>
+                                <li>Guru memberikan bimbingan, verifikasi, dan penguatan positif.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-2xl border-l-4 border-purple-400">
+                            <h5 class="font-bold text-purple-800">3. Kegiatan Penutup (10 Menit)</h5>
+                            <ul class="list-disc list-inside text-xs sm:text-sm text-slate-700 mt-1 space-y-1">
+                                <li>Guru bersama siswa menyimpulkan rangkuman materi pembelajaran.</li>
+                                <li>Guru memberikan pertanyaan refleksi kesan belajar siswa.</li>
+                                <li>Guru memberikan apresiasi dan pujian atas antusiasme seluruh siswa.</li>
+                                <li>Pembelajaran diakhiri dengan doa bersama dan salam penutup.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- E. Rubrik Penilaian -->
+                <div>
+                    <h4 class="text-xl font-extrabold text-slate-800 flex items-center space-x-2 text-purple-600 mb-3">
+                        <i class="fa-solid fa-table-list"></i><span>E. Rubrik Penilaian Pembelajaran</span>
+                    </h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[600px]">
+                            <thead>
+                                <tr class="bg-purple-600 text-white">
+                                    <th class="p-3 font-bold rounded-tl-xl">Kriteria</th>
+                                    <th class="p-3 font-bold">Sangat Baik (4)</th>
+                                    <th class="p-3 font-bold">Baik (3)</th>
+                                    <th class="p-3 font-bold">Cukup (2)</th>
+                                    <th class="p-3 font-bold rounded-tr-xl">Perlu Bimbingan (1)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-slate-800">Pengetahuan Tanda Baca</td>
+                                    <td class="p-3">Memahami seluruh 6 fungsi tanda baca dengan amat tepat.</td>
+                                    <td class="p-3">Memahami 4-5 fungsi tanda baca dengan benar.</td>
+                                    <td class="p-3">Memahami 2-3 fungsi tanda baca.</td>
+                                    <td class="p-3">Belum memahami fungsi tanda baca.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-slate-800">Keterampilan Menulis</td>
+                                    <td class="p-3">Mampu menempatkan seluruh tanda baca & kapital tanpa salah.</td>
+                                    <td class="p-3">Hanya terdapat 1-2 kesalahan kecil penulisan.</td>
+                                    <td class="p-3">Terdapat 3-4 kesalahan penulisan tanda baca.</td>
+                                    <td class="p-3">Membutuhkan bimbingan penuh saat menulis.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 font-bold text-slate-800">Sikap & Keaktifan</td>
+                                    <td class="p-3">Sangat aktif, percaya diri, & membantu teman kelompok.</td>
+                                    <td class="p-3">Aktif mengikuti pembelajaran dengan baik.</td>
+                                    <td class="p-3">Cukup aktif jika dipanggil guru.</td>
+                                    <td class="p-3">Pasif dan kurang bersemangat.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 5. TAB LKPD INTERAKTIF ================= -->
+        <section id="tab-lkpd" class="tab-content hidden space-y-8">
+            <div id="printable-lkpd">
+                <!-- Header -->
+                <div class="bg-gradient-to-r from-emerald-300 via-teal-200 to-sky-200 rounded-3xl p-8 border-4 border-white shadow-lg text-center space-y-2">
+                    <span class="bg-emerald-600 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider">Lembar Kerja Peserta Didik</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-slate-800">Petualangan Seru Mengenal Tanda Baca!</h2>
+                    <p class="text-emerald-900 font-semibold max-w-xl mx-auto">Isilah identitasmu di bawah ini, kerjakan 5 aktivitas seru, lalu periksa skor otomatismu!</p>
+                </div>
+
+                <!-- Identity Input Card -->
+                <div class="bg-white rounded-3xl p-6 border-2 border-emerald-300 shadow-md mt-6 no-print">
+                    <h3 class="text-xl font-extrabold text-emerald-700 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-id-card"></i><span>Identitas Siswa</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Nama Lengkap:</label>
+                            <input type="text" id="lkpd-nama" placeholder="Tulis namamu..." class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-400 focus:outline-none font-bold text-slate-800">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Kelas:</label>
+                            <select id="lkpd-kelas" class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-400 focus:outline-none font-bold text-slate-800">
+                                <option value="3 SD">Kelas 3 SD</option>
+                                <option value="4 SD">Kelas 4 SD</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Tanggal Kerjanya:</label>
+                            <input type="date" id="lkpd-tanggal" class="w-full px-4 py-2.5 rounded-xl border-2 border-slate-200 focus:border-emerald-400 focus:outline-none font-bold text-slate-800">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic LKPD Form Container -->
+                <form id="lkpd-form" onsubmit="event.preventDefault(); submitLKPD();" class="space-y-8 mt-6">
+
+                    <!-- Aktivitas 1: Pasangkan Tanda Baca -->
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200 shadow-md space-y-4">
+                        <div class="flex items-center space-x-3 text-emerald-600 border-b-2 border-slate-100 pb-3">
+                            <span class="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center font-extrabold">1</span>
+                            <h3 class="text-xl font-extrabold text-slate-800">Aktivitas 1: Pasangkan Tanda Baca yang Tepat!</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium">Pilihlah nama tanda baca yang sesuai untuk setiap simbol berikut:</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Q1 -->
+                            <div class="bg-pastelBlue/50 p-4 rounded-2xl flex items-center justify-between border border-sky-200">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-3xl font-extrabold text-sky-600 w-8 text-center">?</span>
+                                    <span class="text-sm font-bold text-slate-700">Simbol di samping dinamakan...</span>
+                                </div>
+                                <select id="act1-q1" class="px-3 py-2 rounded-xl border-2 border-sky-300 font-bold text-sm bg-white focus:outline-none">
+                                    <option value="">-- Pilih --</option>
+                                    <option value="titik">Tanda Titik</option>
+                                    <option value="tanya">Tanda Tanya</option>
+                                    <option value="seru">Tanda Seru</option>
+                                </select>
+                            </div>
+                            <!-- Q2 -->
+                            <div class="bg-pastelPink/50 p-4 rounded-2xl flex items-center justify-between border border-pink-200">
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-3xl font-extrabold text-pink-600 w-8 text-center">!</span>
+                                    <span class="text-sm font-bold text-slate-700">Simbol di samping dinamakan...</span>
+                                </div>
+                                <select id="act1-q2" class="px-3 py-2 rounded-xl border-2 border-pink-300 font-bold text-sm bg-white focus:outline-none">
+                                    <option value="">-- Pilih --</option>
+                                    <option value="seru">Tanda Seru</option>
+                                    <option value="koma">Tanda Koma</option>
+                                    <option value="petik">Tanda Petik</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aktivitas 2: Isi Titik-Titiknya -->
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200 shadow-md space-y-4">
+                        <div class="flex items-center space-x-3 text-amber-600 border-b-2 border-slate-100 pb-3">
+                            <span class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center font-extrabold">2</span>
+                            <h3 class="text-xl font-extrabold text-slate-800">Aktivitas 2: Isi Titik-Titiknya!</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium">Pilihlah tanda baca yang tepat di dalam kurung rumpang:</p>
+
+                        <div class="space-y-3">
+                            <!-- Q1 -->
+                            <div class="bg-pastelYellow/40 p-4 rounded-2xl border border-amber-200 flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-sm sm:text-base font-bold text-slate-800">1) Kemana kamu akan pergi berlibur besok <span class="text-amber-600">[ ... ]</span></span>
+                                <select id="act2-q1" class="px-3 py-1.5 rounded-xl border-2 border-amber-300 font-bold text-sm bg-white">
+                                    <option value="">?</option>
+                                    <option value=".">. (Titik)</option>
+                                    <option value="?">? (Tanda Tanya)</option>
+                                    <option value="!">! (Tanda Seru)</option>
+                                </select>
+                            </div>
+                            <!-- Q2 -->
+                            <div class="bg-pastelYellow/40 p-4 rounded-2xl border border-amber-200 flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-sm sm:text-base font-bold text-slate-800">2) Kebersihan kelas adalah tanggung jawab kita <span class="text-amber-600">[ ... ]</span></span>
+                                <select id="act2-q2" class="px-3 py-1.5 rounded-xl border-2 border-amber-300 font-bold text-sm bg-white">
+                                    <option value="">?</option>
+                                    <option value=".">. (Titik)</option>
+                                    <option value=",">, (Koma)</option>
+                                    <option value="?">? (Tanda Tanya)</option>
+                                </select>
+                            </div>
+                            <!-- Q3 -->
+                            <div class="bg-pastelYellow/40 p-4 rounded-2xl border border-amber-200 flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-sm sm:text-base font-bold text-slate-800">3) Dilarang membuang sampah sembarangan <span class="text-amber-600">[ ... ]</span></span>
+                                <select id="act2-q3" class="px-3 py-1.5 rounded-xl border-2 border-amber-300 font-bold text-sm bg-white">
+                                    <option value="">?</option>
+                                    <option value="!">! (Tanda Seru)</option>
+                                    <option value=",">, (Koma)</option>
+                                    <option value=".">. (Titik)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aktivitas 3: Benar atau Salah -->
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200 shadow-md space-y-4">
+                        <div class="flex items-center space-x-3 text-pink-600 border-b-2 border-slate-100 pb-3">
+                            <span class="w-8 h-8 bg-pink-100 rounded-lg flex items-center justify-center font-extrabold">3</span>
+                            <h3 class="text-xl font-extrabold text-slate-800">Aktivitas 3: Benar atau Salah?</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium">Tentukan apakah penggunaan tanda baca pada kalimat berikut sudah BENAR atau SALAH!</p>
+
+                        <div class="space-y-3">
+                            <!-- Q1 -->
+                            <div class="bg-pastelPink/40 p-4 rounded-2xl border border-pink-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm">"Siapa namamu!"</p>
+                                    <p class="text-xs text-slate-500">Menggunakan tanda seru untuk pertanyaan.</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <label class="cursor-pointer px-4 py-2 rounded-xl border-2 border-pink-300 font-bold text-xs bg-white hover:bg-pink-100 flex items-center space-x-1">
+                                        <input type="radio" name="act3-q1" value="benar"> <span>Benar</span>
+                                    </label>
+                                    <label class="cursor-pointer px-4 py-2 rounded-xl border-2 border-pink-300 font-bold text-xs bg-white hover:bg-pink-100 flex items-center space-x-1">
+                                        <input type="radio" name="act3-q1" value="salah"> <span>Salah</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- Q2 -->
+                            <div class="bg-pastelPink/40 p-4 rounded-2xl border border-pink-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm">"Ibu membeli penggaris, penghapus, dan pensil."</p>
+                                    <p class="text-xs text-slate-500">Penggunaan tanda koma dan titik.</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <label class="cursor-pointer px-4 py-2 rounded-xl border-2 border-pink-300 font-bold text-xs bg-white hover:bg-pink-100 flex items-center space-x-1">
+                                        <input type="radio" name="act3-q2" value="benar"> <span>Benar</span>
+                                    </label>
+                                    <label class="cursor-pointer px-4 py-2 rounded-xl border-2 border-pink-300 font-bold text-xs bg-white hover:bg-pink-100 flex items-center space-x-1">
+                                        <input type="radio" name="act3-q2" value="salah"> <span>Salah</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aktivitas 4: Perbaiki Kalimat (Huruf Kapital & Tanda Baca) -->
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200 shadow-md space-y-4">
+                        <div class="flex items-center space-x-3 text-purple-600 border-b-2 border-slate-100 pb-3">
+                            <span class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center font-extrabold">4</span>
+                            <h3 class="text-xl font-extrabold text-slate-800">Aktivitas 4: Perbaiki Penulisan Kalimat!</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium">Pilihlah kalimat perbaikan yang paling BENAR dengan huruf kapital dan tanda baca tepat:</p>
+
+                        <div class="space-y-4">
+                            <!-- Q1 -->
+                            <div class="bg-pastelPurple/40 p-4 rounded-2xl border border-purple-200 space-y-2">
+                                <p class="text-xs font-bold text-purple-800">Kalimat Salah: "dani pergi ke bandung pada hari minggu"</p>
+                                <select id="act4-q1" class="w-full p-2.5 rounded-xl border-2 border-purple-300 text-xs sm:text-sm font-bold bg-white focus:outline-none">
+                                    <option value="">-- Pilih Kalimat yang Benar --</option>
+                                    <option value="salah1">dani Pergi Ke bandung Pada Hari minggu.</option>
+                                    <option value="benar">Dani pergi ke Bandung pada hari Minggu.</option>
+                                    <option value="salah2">Dani pergi ke bandung pada hari minggu?</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aktivitas 5: Tantangan Detektif Tanda Baca -->
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200 shadow-md space-y-4">
+                        <div class="flex items-center space-x-3 text-sky-600 border-b-2 border-slate-100 pb-3">
+                            <span class="w-8 h-8 bg-sky-100 rounded-lg flex items-center justify-center font-extrabold">5</span>
+                            <h3 class="text-xl font-extrabold text-slate-800">Aktivitas 5: Tantangan Detektif Tanda Baca! 🔍</h3>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-600 font-medium">Berapa jumlah tanda tanya ( ? ) dan tanda titik ( . ) yang ada dalam percakapan cerita pendek berikut?</p>
+
+                        <div class="bg-sky-50 p-4 rounded-2xl border border-sky-200 font-medium text-slate-700 text-sm space-y-2 italic">
+                            <p>"Halo Siti! Apakah kamu sudah membaca buku cerita baru?" tanya Budi. Siti menjawab, "Belum Budi. Apakah bukunya seru?" Budi tersenyum gembira.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Berapa jumlah tanda tanya ( ? ) dalam teks?</label>
+                                <select id="act5-q1" class="w-full p-2.5 rounded-xl border-2 border-sky-300 text-sm font-bold bg-white">
+                                    <option value="">-- Jawab --</option>
+                                    <option value="1">1 Tanda Tanya</option>
+                                    <option value="2">2 Tanda Tanya</option>
+                                    <option value="3">3 Tanda Tanya</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Berapa jumlah tanda titik ( . ) dalam teks?</label>
+                                <select id="act5-q2" class="w-full p-2.5 rounded-xl border-2 border-sky-300 text-sm font-bold bg-white">
+                                    <option value="">-- Jawab --</option>
+                                    <option value="1">1 Tanda Titik</option>
+                                    <option value="3">3 Tanda Titik</option>
+                                    <option value="5">5 Tanda Titik</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center pt-4 no-print">
+                        <button type="submit" class="px-10 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold rounded-2xl shadow-xl text-xl transform hover:-translate-y-1 active:translate-y-0 transition flex items-center justify-center space-x-3 mx-auto">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Periksa Jawaban Sekarang!</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Result Modal & Feedback -->
+                <div id="lkpd-result-box" class="hidden bg-gradient-to-b from-amber-100 to-yellow-50 rounded-3xl p-8 border-4 border-amber-400 shadow-2xl mt-8 text-center space-y-6">
+                    <div class="inline-block p-4 bg-white rounded-full shadow-lg border-4 border-amber-300 animate-bounce">
+                        <span class="text-5xl">🏆</span>
+                    </div>
+
+                    <h3 class="text-3xl font-black text-slate-800">Hasil Petualangan Tanda Baca!</h3>
+
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
+                        <div class="bg-white px-8 py-6 rounded-2xl shadow border-2 border-amber-300">
+                            <span class="text-xs text-slate-500 font-bold uppercase block">Skor Akhir Kamu</span>
+                            <span id="lkpd-final-score" class="text-5xl font-black text-emerald-600">0 / 100</span>
+                        </div>
+                        <div class="bg-white px-8 py-6 rounded-2xl shadow border-2 border-amber-300 text-left space-y-1">
+                            <p class="text-xs text-slate-500 font-bold">Peringkat:</p>
+                            <p id="lkpd-badge-title" class="text-xl font-extrabold text-amber-600">Bintang Tanda Baca 🌟</p>
+                        </div>
+                    </div>
+
+                    <div id="lkpd-motivation-text" class="bg-white/80 p-4 rounded-2xl text-emerald-800 font-bold text-lg border border-emerald-300">
+                        "Hebat! Kamu semakin pintar menggunakan tanda baca!"
+                    </div>
+
+                    <!-- Explanation Detail -->
+                    <div class="text-left bg-white p-6 rounded-2xl border border-amber-200 space-y-3 text-xs sm:text-sm">
+                        <h4 class="font-bold text-slate-800 text-base border-b pb-2">Pembahasan Singkat Jawaban:</h4>
+                        <ul class="list-disc list-inside space-y-1 text-slate-600">
+                            <li><strong>Akt.1:</strong> Simbol (?) adalah Tanda Tanya, dan (!) adalah Tanda Seru.</li>
+                            <li><strong>Akt.2:</strong> Pertanyaan diakhiri (?), pernyataan diakhiri (.), dan kalimat perintah diakhiri (!).</li>
+                            <li><strong>Akt.3:</strong> "Siapa namamu!" salah karena seharusnya memakai tanda tanya (?).</li>
+                            <li><strong>Akt.4:</strong> Nama orang (Dani), kota (Bandung), dan hari (Minggu) wajib huruf kapital!</li>
+                            <li><strong>Akt.5:</strong> Dalam teks terdapat tepat 2 tanda tanya (?) dan 3 tanda titik (.).</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex flex-wrap justify-center gap-4 no-print">
+                        <button onclick="window.print()" class="px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white font-extrabold rounded-2xl shadow transition flex items-center space-x-2">
+                            <i class="fa-solid fa-print"></i>
+                            <span>Cetak Hasil LKPD</span>
+                        </button>
+                        <button onclick="resetLKPD()" class="px-6 py-3 bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold rounded-2xl shadow transition">
+                            Coba Lagi 🔄
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t-4 border-amber-300 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+            <div class="flex justify-center items-center space-x-2 text-2xl font-heading text-emerald-600">
+                <i class="fa-solid fa-pencil"></i>
+                <span>PenaPintar Bahasa Indonesia SD</span>
+            </div>
+            <p class="text-xs text-slate-500 font-medium">
+                Website Media Pembelajaran Interaktif Tanda Baca Bahasa Indonesia Kelas 3–4 Sekolah Dasar.
+            </p>
+            <div class="text-xs text-slate-400">
+                © 2026 PenaPintar. Dibuat khusus untuk pendidikan anak Indonesia ceria.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ================= TAB NAVIGATION =================
+        function switchTab(tabId) {
+            // Play sound
+            playSoundEffect('click');
+
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+
+            // Show selected tab
+            const targetTab = document.getElementById('tab-' + tabId);
+            if(targetTab) {
+                targetTab.classList.remove('hidden');
+            }
+
+            // Update Nav buttons styling
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('bg-amber-100', 'text-amber-800'));
+
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if(activeBtn && tabId !== 'lkpd') {
+                activeBtn.classList.add('bg-amber-100', 'text-amber-800');
+            }
+
+            // Scroll smoothly to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // ================= FLIP CARDS =================
+        function flipCard(cardContainer) {
+            playSoundEffect('flip');
+            const innerCard = cardContainer.querySelector('.card-inner');
+            innerCard.classList.toggle('rotate-y-180');
+        }
+
+        // ================= WEB AUDIO SYNTHESIZER =================
+        function playSoundEffect(type) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if(type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.1);
+                } else if(type === 'flip') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(300, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.15);
+                } else if(type === 'star' || type === 'success') {
+                    const now = ctx.currentTime;
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+                    osc.start(now);
+                    osc.stop(now + 0.5);
+                }
+            } catch(e) {
+                console.log("Audio API not supported or blocked");
+            }
+        }
+
+        // Speech Synthesis for Flashcards
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'id-ID';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert(text);
+            }
+        }
+
+        // ================= MEDIA B: TEBAK TANDA BACA MINI GAME =================
+        const tebakQuestions = [
+            { text: '"Apakah kamu sudah sarapan pagi ini___"', answer: '?', options: ['.', ',', '?', '!'] },
+            { text: '"Ayo, kita bersihkan ruang kelas bersama-sama___"', answer: '!', options: ['.', '?', '!'] },
+            { text: '"Ibu membeli jeruk___ apel___ dan anggur di pasar."', answer: ',', options: [',', '.', '?'] },
+            { text: '"Rani pergi ke perpustakaan sekolah___"', answer: '.', options: ['.', '!', '?'] }
+        ];
+
+        let currentTebakIndex = 0;
+        let miniGameScore = 0;
+
+        function loadTebakQuestion() {
+            const q = tebakQuestions[currentTebakIndex];
+            document.getElementById('tebak-question-box').innerText = q.text;
+            const container = document.getElementById('tebak-options-container');
+            container.innerHTML = '';
+            document.getElementById('tebak-feedback').innerText = '';
+
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "px-6 py-3 bg-white hover:bg-amber-300 text-slate-800 font-extrabold text-2xl rounded-2xl border-2 border-amber-300 shadow transition transform hover:scale-110";
+                btn.innerText = opt;
+                btn.onclick = () => answerTebak(opt, q.answer);
+                container.appendChild(btn);
+            });
+        }
+
+        function answerTebak(selected, correct) {
+            const fb = document.getElementById('tebak-feedback');
+            if(selected === correct) {
+                playSoundEffect('success');
+                miniGameScore += 25;
+                document.getElementById('mini-game-score').innerText = miniGameScore;
+                fb.className = "font-bold text-lg text-emerald-600";
+                fb.innerText = "🎉 Hebat! Jawabanmu Benar!";
+            } else {
+                fb.className = "font-bold text-lg text-pink-600";
+                fb.innerText = "❌ Kurang tepat, ayo coba lagi!";
+            }
+
+            setTimeout(() => {
+                currentTebakIndex = (currentTebakIndex + 1) % tebakQuestions.length;
+                loadTebakQuestion();
+            }, 1500);
+        }
+
+        // ================= MEDIA C: PAPAN KALIMAT =================
+        function checkPapanChoice(choice) {
+            const target = document.getElementById('papan-target');
+            const fb = document.getElementById('papan-feedback');
+
+            target.innerText = choice;
+            if(choice === '!') {
+                playSoundEffect('success');
+                fb.className = "text-amber-300 font-bold mt-2";
+                fb.innerText = "✨ Luar biasa! Tanda seru (!) sangat tepat untuk kalimat kekaguman ini!";
+            } else {
+                fb.className = "text-pink-300 font-bold mt-2";
+                fb.innerText = "Hmm, tanda " + choice + " kurang tepat untuk kalimat kekaguman ini. Coba lagi!";
+            }
+        }
+
+        // ================= LKPD AUTOMATIC GRADING =================
+        function submitLKPD() {
+            let score = 0;
+
+            // Act 1 (20 pts)
+            if(document.getElementById('act1-q1').value === 'tanya') score += 10;
+            if(document.getElementById('act1-q2').value === 'seru') score += 10;
+
+            // Act 2 (30 pts)
+            if(document.getElementById('act2-q1').value === '?') score += 10;
+            if(document.getElementById('act2-q2').value === '.') score += 10;
+            if(document.getElementById('act2-q3').value === '!') score += 10;
+
+            // Act 3 (20 pts)
+            const act3_q1 = document.querySelector('input[name="act3-q1"]:checked');
+            const act3_q2 = document.querySelector('input[name="act3-q2"]:checked');
+            if(act3_q1 && act3_q1.value === 'salah') score += 10;
+            if(act3_q2 && act3_q2.value === 'benar') score += 10;
+
+            // Act 4 (15 pts)
+            if(document.getElementById('act4-q1').value === 'benar') score += 15;
+
+            // Act 5 (15 pts)
+            if(document.getElementById('act5-q1').value === '2') score += 7.5;
+            if(document.getElementById('act5-q2').value === '3') score += 7.5;
+
+            score = Math.round(score);
+
+            // Display Results
+            document.getElementById('lkpd-final-score').innerText = score + " / 100";
+            const badge = document.getElementById('lkpd-badge-title');
+            const motivation = document.getElementById('lkpd-motivation-text');
+
+            if(score >= 85) {
+                badge.innerText = "🌟 Bintang Tanda Baca (Sangat Baik)";
+                motivation.innerText = "Hebat Sekali! Kamu sangat pintar dan menguasai seluruh penggunaan tanda baca!";
+            } else if(score >= 70) {
+                badge.innerText = "👍 Juara Tanda Baca (Baik)";
+                motivation.innerText = "Bagus Sekali! Kamu sudah memahami sebagian besar tanda baca!";
+            } else {
+                badge.innerText = "📚 Sahabat Belajar (Cukup)";
+                motivation.innerText = "Tetap semangat! Ayo pelajari kembali materi dan coba lagi ya!";
+            }
+
+            document.getElementById('lkpd-result-box').classList.remove('hidden');
+            playSoundEffect('success');
+
+            // Trigger Confetti effect
+            if(typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            document.getElementById('lkpd-result-box').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetLKPD() {
+            document.getElementById('lkpd-form').reset();
+            document.getElementById('lkpd-result-box').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ================= INITIALIZATION =================
+        window.onload = function() {
+            loadTebakQuestion();
+            // Default active tab
+            switchTab('beranda');
+
+            // Set today date on LKPD
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('lkpd-tanggal');
+            if(dateInput) dateInput.value = today;
+        };
+    </script>
+</body>
+</html>
